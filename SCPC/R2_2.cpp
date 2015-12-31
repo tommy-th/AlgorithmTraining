@@ -4,6 +4,8 @@
 #include <algorithm>
 using namespace std;
 
+// Fail
+
 #define LL long long
 #define MOD 1000000007
 #define MIN(a, b) ((a) < (b) ? (a) : (b))

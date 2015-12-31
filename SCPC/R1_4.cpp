@@ -5,6 +5,8 @@
 #include <iostream>
 using namespace std;
 
+// Fail
+
 #define INF 100000005
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #define MAX(a, b) ((a) > (b) ? (a) : (b))

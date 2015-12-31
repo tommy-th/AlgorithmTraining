@@ -3,6 +3,8 @@
 #include <set>
 using namespace std;
 
+// Fail
+
 set<int> q[3];
 int T, N, result;
 

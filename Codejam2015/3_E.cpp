@@ -5,6 +5,8 @@
 #include <map>
 using namespace std;
 
+// Fail
+
 int T, N, D, P[5005], result, err;
 
 void errCheck(int n, int s){

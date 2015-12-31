@@ -3,6 +3,8 @@
 #include <iostream>
 using namespace std;
 
+// Fail
+
 int len[505][505], lists[505][505], results[505], D[505], P[505], cut[505][505];
 int q[2][505], H[505], qidx, qidxNext;
 int T, N, M, start, rIdx;

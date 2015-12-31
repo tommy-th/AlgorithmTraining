@@ -5,6 +5,9 @@
 #include <algorithm>
 using namespace std;
 
+// Fail
+
+
 struct stick{
 	int a, b;
 	stick(){}

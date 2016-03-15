@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DF1CE0221C848D4000E00F1A /* 2250(트리의 높이와 너비).cpp in Sources */ = {isa = PBXBuildFile; fileRef = DF1CE0211C848D4000E00F1A /* 2250(트리의 높이와 너비).cpp */; };
+		DF793B1C1C984F2B00794CB0 /* 1514(자물쇠).cpp in Sources */ = {isa = PBXBuildFile; fileRef = DF793B1B1C984F2B00794CB0 /* 1514(자물쇠).cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -62,10 +63,9 @@
 		DF1CE0211C848D4000E00F1A /* 2250(트리의 높이와 너비).cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "2250(트리의 높이와 너비).cpp"; sourceTree = "<group>"; };
 		DF291DA91C39304E00B8B2B8 /* 11493 - A(Hungarian method).cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "11493 - A(Hungarian method).cpp"; sourceTree = "<group>"; };
 		DF45506E1C57D2BE005036FD /* MyHungarian.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyHungarian.cpp; sourceTree = "<group>"; };
-		DF4550701C57D2C6005036FD /* 11493 - ans.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "11493 - ans.cpp"; sourceTree = "<group>"; };
 		DF63BE181C46138F004B751A /* 11493 - A(SPFA).cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "11493 - A(SPFA).cpp"; sourceTree = "<group>"; };
 		DF63BE1A1C468361004B751A /* 11495 - C(Maximum flow).cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "11495 - C(Maximum flow).cpp"; sourceTree = "<group>"; };
-		DF63BE1C1C4686DB004B751A /* 11495 - ans.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "11495 - ans.cpp"; sourceTree = "<group>"; };
+		DF793B1B1C984F2B00794CB0 /* 1514(자물쇠).cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "1514(자물쇠).cpp"; sourceTree = "<group>"; };
 		DFB58F8D1C3F8D2F005AE498 /* bfs_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bfs_test.cpp; sourceTree = "<group>"; };
 		DFE3203A1C3FC6B100838A2A /* Lucas_theorem_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Lucas_theorem_test.cpp; sourceTree = "<group>"; };
 		DFED45091C2D5A1300E3EA78 /* AlgorithmTraining */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AlgorithmTraining; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -268,11 +268,9 @@
 			isa = PBXGroup;
 			children = (
 				DF291DA91C39304E00B8B2B8 /* 11493 - A(Hungarian method).cpp */,
-				DF4550701C57D2C6005036FD /* 11493 - ans.cpp */,
 				DF45506E1C57D2BE005036FD /* MyHungarian.cpp */,
 				DF63BE181C46138F004B751A /* 11493 - A(SPFA).cpp */,
 				DF63BE1A1C468361004B751A /* 11495 - C(Maximum flow).cpp */,
-				DF63BE1C1C4686DB004B751A /* 11495 - ans.cpp */,
 			);
 			name = "Asia Regional Daejeon 2015";
 			sourceTree = "<group>";
@@ -319,6 +317,7 @@
 				DFED45261C2D5D4100E3EA78 /* 2591(숫자카드).cpp */,
 				DFED45381C2D5EE600E3EA78 /* 4256(트리).c */,
 				DFED45391C2D5EE600E3EA78 /* 6064(잉카달력).c */,
+				DF793B1B1C984F2B00794CB0 /* 1514(자물쇠).cpp */,
 				DFED453A1C2D5EE600E3EA78 /* 7489(factorials).c */,
 				DFED45221C2D5B7B00E3EA78 /* 7579(앱).cpp */,
 				DFED453B1C2D5EE600E3EA78 /* 7662(이중우선순위큐).c */,
@@ -702,6 +701,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DF1CE0221C848D4000E00F1A /* 2250(트리의 높이와 너비).cpp in Sources */,
+				DF793B1C1C984F2B00794CB0 /* 1514(자물쇠).cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -69,7 +69,6 @@
 		3EC2477D1CA58D3C00F88B66 /* 1582(아티스트).cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "1582(아티스트).cpp"; sourceTree = "<group>"; };
 		3ECFF5831CAEEA8C00D214E2 /* 2066(카드놀이).cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "2066(카드놀이).cpp"; sourceTree = "<group>"; };
 		3EE77B3D1CB8C9EF00B47AC2 /* 윤목.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "윤목.cpp"; sourceTree = "<group>"; };
-		3EE77B3F1CB8DC7500B47AC2 /* 극단적인 수.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "극단적인 수.cpp"; sourceTree = "<group>"; };
 		DF1CE0211C848D4000E00F1A /* 2250(트리의 높이와 너비).cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "2250(트리의 높이와 너비).cpp"; sourceTree = "<group>"; };
 		DF291DA91C39304E00B8B2B8 /* 11493 - A(Hungarian method).cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "11493 - A(Hungarian method).cpp"; sourceTree = "<group>"; };
 		DF45506E1C57D2BE005036FD /* MyHungarian.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyHungarian.cpp; sourceTree = "<group>"; };
@@ -316,7 +315,6 @@
 				DFE3203A1C3FC6B100838A2A /* Lucas_theorem_test.cpp */,
 				3E6878D81CA933D200148EBD /* cube.cpp */,
 				3EE77B3D1CB8C9EF00B47AC2 /* 윤목.cpp */,
-				3EE77B3F1CB8DC7500B47AC2 /* 극단적인 수.cpp */,
 				3EAE926E1CB9193D00DD16B7 /* 감시로봇.cpp */,
 			);
 			path = AlgorithmTraining;

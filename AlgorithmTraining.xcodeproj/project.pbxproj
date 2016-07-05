@@ -6,6 +6,10 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		3EC9C3251D2C6A3C00E6388D /* 5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EC9C3241D2C6A3C00E6388D /* 5.cpp */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		DFED45071C2D5A1300E3EA78 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -68,9 +72,13 @@
 		3EC0BB831CFECCDC005CC3CD /* 1261(알고스팟).cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "1261(알고스팟).cpp"; sourceTree = "<group>"; };
 		3EC2477D1CA58D3C00F88B66 /* 1582(아티스트).cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "1582(아티스트).cpp"; sourceTree = "<group>"; };
 		3EC4AAE91CF988380056DDB4 /* 1654(랜선 자르기).cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "1654(랜선 자르기).cpp"; sourceTree = "<group>"; };
+		3EC9C3241D2C6A3C00E6388D /* 5.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = 5.cpp; path = 2016/Round1/5.cpp; sourceTree = "<group>"; };
 		3ECFF5831CAEEA8C00D214E2 /* 2066(카드놀이).cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "2066(카드놀이).cpp"; sourceTree = "<group>"; };
 		3ED043F41CD5D91300E1C80C /* 1102(발전소).cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "1102(발전소).cpp"; sourceTree = "<group>"; };
 		3EE77B3D1CB8C9EF00B47AC2 /* 윤목.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "윤목.cpp"; sourceTree = "<group>"; };
+		3EEE67A21D235383009ACCEF /* 1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = 1.cpp; path = 2016/Round1/1.cpp; sourceTree = "<group>"; };
+		3EEE67A41D2363E5009ACCEF /* 2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = 2.cpp; path = 2016/Round1/2.cpp; sourceTree = "<group>"; };
+		3EEE67AA1D239E6C009ACCEF /* 4.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = 4.cpp; path = 2016/Round1/4.cpp; sourceTree = "<group>"; };
 		DF1CE0211C848D4000E00F1A /* 2250(트리의 높이와 너비).cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "2250(트리의 높이와 너비).cpp"; sourceTree = "<group>"; };
 		DF291DA91C39304E00B8B2B8 /* 11493 - A(Hungarian method).cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "11493 - A(Hungarian method).cpp"; sourceTree = "<group>"; };
 		DF45506E1C57D2BE005036FD /* MyHungarian.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MyHungarian.cpp; sourceTree = "<group>"; };
@@ -275,6 +283,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3EEE67A01D23536C009ACCEF /* 2016 */ = {
+			isa = PBXGroup;
+			children = (
+				3EEE67A11D235371009ACCEF /* Round1 */,
+			);
+			name = 2016;
+			sourceTree = "<group>";
+		};
+		3EEE67A11D235371009ACCEF /* Round1 */ = {
+			isa = PBXGroup;
+			children = (
+				3EEE67A21D235383009ACCEF /* 1.cpp */,
+				3EEE67A41D2363E5009ACCEF /* 2.cpp */,
+				3EEE67AA1D239E6C009ACCEF /* 4.cpp */,
+				3EC9C3241D2C6A3C00E6388D /* 5.cpp */,
+			);
+			name = Round1;
+			sourceTree = "<group>";
+		};
 		DF291DA81C392FD000B8B2B8 /* Asia Regional Daejeon 2015 */ = {
 			isa = PBXGroup;
 			children = (
@@ -529,6 +556,7 @@
 		DFED46881C2D721300E3EA78 /* SCPC */ = {
 			isa = PBXGroup;
 			children = (
+				3EEE67A01D23536C009ACCEF /* 2016 */,
 				DFED468E1C2D729800E3EA78 /* Practice */,
 				DFED46A21C2D760D00E3EA78 /* Round1 */,
 				DFED46A31C2D762000E3EA78 /* Round2 */,
@@ -748,6 +776,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EC9C3251D2C6A3C00E6388D /* 5.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -836,6 +865,7 @@
 		DFED45111C2D5A1300E3EA78 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				OTHER_LDFLAGS = "-lcurl";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -843,6 +873,7 @@
 		DFED45121C2D5A1300E3EA78 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				OTHER_LDFLAGS = "-lcurl";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

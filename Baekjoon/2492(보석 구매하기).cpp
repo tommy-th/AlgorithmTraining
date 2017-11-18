@@ -1,69 +1,70 @@
 #include <iostream>
+#include <set>
+#include <functional>
 #include <vector>
 #include <algorithm>
-using namespace std;
 
-typedef struct __dot{
-	int n, p;
-	__dot(){ n = 0, p = 0; }
-	__dot(int in, int ip){ n = in, p = ip; }
-	bool operator < (const __dot & oth) const {
-		return oth.p > p;
-	}
-}DOT;
+struct Dot {
+    int x, y;
 
-int H[105], N, M, T, K, rx, ry, result;
-vector<DOT> dotx, doty;
+    Dot(int x, int y) : x(x), y(y) {}
+};
 
-void search_col(int sx){
-	int temp;
-	for (int i = 0; i < doty.size(); i++){
-		int sy = doty[i].p;
-		int j = i;
-		temp = 0;
-		while (doty[j].p <= sy + K){
-			if(H[doty[j].n]) temp++;
-			j++;
-			if (j >= doty.size()) break;
-		}
-		if (temp > result){
-			result = temp;
-			rx = sx, ry = sy + K;
-		}
-	}
-}
-void search_row(){
-	for (int i = 0; i < dotx.size();){
-		int sx = dotx[i].p;
-		int j = i;
-		while (dotx[j].p <= sx + K){
-			H[dotx[j].n] = 1;
-			j++;
-			if (j >= dotx.size()) break;
-		}
-		search_col(sx);
-		while (sx == dotx[i].p){
-			H[dotx[i].n] = 0;
-			i++;
-			if (i >= dotx.size()) break;
-		}
-	}
+std::set<int> xdots;
+std::set<int, std::greater<int>> ydots;
+std::vector<Dot> dots;
+
+int cols, rows, dotNum, recSize;
+int result, rleft, rtop;
+
+inline void calcRect(const int left, const int top) {
+    int counts = 0;
+
+    for (const auto& dot : dots) {
+        if (dot.x >= left && dot.x <= left + recSize) {
+            if (dot.y >= top - recSize && dot.y <= top) {
+                counts++;
+            }
+        }
+    }
+
+    if (counts > result) {
+        result = counts;
+        rleft = left;
+        rtop = top;
+    }
 }
 
-int main(){
+int main() {
+    int x, y;
 
-	int x, y;
-	cin >> N >> M >> T >> K;
+    std::cin >> cols >> rows >> dotNum >> recSize;
 
-	for (int i = 1; i <= T; i++){
-		cin >> x >> y;
-		dotx.push_back(DOT(i, x));
-		doty.push_back(DOT(i, y));
-	}
-	sort(dotx.begin(), dotx.end());
-	sort(doty.begin(), doty.end());
-	search_row();
-	cout << rx << " " << ry << endl << result << endl;
+    for(int i = 1; i <= dotNum; i++) {
+        std::cin >> x >> y;
+        dots.emplace_back(x, y);
+        xdots.insert(x);
+        ydots.insert(y);
+    }
 
-	return 0;
+    for(auto xdot : xdots) {
+        if (xdot > cols - recSize)
+            xdot = cols - recSize;
+
+        for(auto ydot : ydots) {
+            if (ydot < recSize)
+                ydot = recSize;
+
+            calcRect(xdot, ydot);
+
+            if (ydot == recSize)
+                break;
+        }
+
+        if (xdot == cols - recSize)
+            break;
+    }
+
+    std::cout << rleft << " " << rtop << std::endl;
+    std::cout << result << std::endl;
 }

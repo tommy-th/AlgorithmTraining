@@ -1,29 +1,65 @@
 class Solution {
-using LL = long long int;
 public:
-    string decodeAtIndex(string S, int K) {
-        LL totalCount = 0;
+    template<typename Out>
+    void split(const std::string &s, char delim, Out result) {
+        std::stringstream ss(s);
+        std::string item;
+        while (std::getline(ss, item, delim)) {
+            *(result++) = item;
+        }
+    }
 
-        for (int i=0; i<S.size(); i++) {
-            if (isdigit(S[i])) {
-                totalCount *= (S[i]-'0');
-            } else {
-                totalCount++;
+    std::vector<std::string> split(const std::string &s, char delim) {
+        std::vector<std::string> elems;
+        split(s, delim, std::back_inserter(elems));
+        return elems;
+    }
+
+    vector<string> uncommonFromSentences(string A, string B) {
+        vector<string> ret;
+        std::vector<std::string> asplit = split(A, ' ');
+        std::vector<std::string> bsplit = split(B, ' ');
+
+        for (int i = 0; i< asplit.size(); i++) {
+            bool valid = true;
+            for (int j = 0; j< asplit.size(); j++) {
+                if (i != j) {
+                    if (asplit[i] == asplit[j]) {
+                        valid = false;
+                        break;
+                    }
+                }
             }
+            if (not valid) continue;
+            for (int j = 0; j< bsplit.size(); j++) {
+                if (asplit[i] == bsplit[j]) {
+                    valid = false;
+                    break;
+                }
+            }
+            if (valid) ret.push_back(asplit[i]);
         }
 
-        for (int i=S.size()-1; i>=0; i--) {
-            if (isdigit(S[i])) {
-                totalCount /= (S[i]-'0');
-                if (K >= totalCount)
-                    K %= totalCount;
-                if (K == 0) K = totalCount;
-            } else {
-                if (K==totalCount) return S.substr(i, 1);
-                totalCount--;
+        for (int i = 0; i< bsplit.size(); i++) {
+            bool valid = true;
+            for (int j = 0; j< bsplit.size(); j++) {
+                if (i != j) {
+                    if (bsplit[i] == bsplit[j]) {
+                        valid = false;
+                        break;
+                    }
+                }
             }
+            if (not valid) continue;
+            for (int j = 0; j< asplit.size(); j++) {
+                if (bsplit[i] == asplit[j]) {
+                    valid = false;
+                    break;
+                }
+            }
+            if (valid) ret.push_back(bsplit[i]);
         }
 
-        return "";
+        return ret;
     }
 };

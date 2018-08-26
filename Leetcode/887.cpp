@@ -1,34 +1,15 @@
 class Solution {
 public:
-    int projectionArea(vector<vector<int>>& grid) {
-        int totalCount = 0;
-        int ylen = grid.size();
-        int xlen = grid[0].size();
+    int superEggDrop(int K, int N) {
+        vector<int> dp(K + 1, 0);
+        int step = 0;
 
-        for (int i=0; i<ylen; i++) {
-            for (int j=0; j<xlen; j++) {
-                if (grid[i][j] > 0)
-                    totalCount++;
-            }
+        while (dp[K] < N) {
+            step++;
+            for (int i = K; i > 0; i--)
+                dp[i] = dp[i - 1] + 1 + dp[i];
         }
 
-        for (int i=0; i<ylen; i++) {
-            int max = 0;
-            for (int j=0; j<xlen; j++) {
-                if (grid[i][j] > max)
-                    max = grid[i][j];
-            }
-            totalCount += max;
-        }
-
-        for (int j=0; j<xlen; j++) {
-            int max = 0;
-            for (int i=0; i<ylen; i++) {
-                if (grid[i][j] > max)
-                    max = grid[i][j];
-            }
-            totalCount += max;
-        }
-        return totalCount;
+        return step;
     }
 };

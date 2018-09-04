@@ -1,7 +1,7 @@
-#include "895.h"
+#include "899.h"
 
 int main() {
-    FreqStack f;
+    Solution solution;
 
-    f.push(1);
+    cout << solution.orderlyQueue("qkefjqal", 2) << endl;
 }

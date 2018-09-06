@@ -34,6 +34,12 @@ set(SOURCE_FILES
         893.h
         894.h
         895.h
-        main.cpp 896.h 897.h 898.h 899.h 84.h)
+        896.h
+        897.h
+        898.h
+        899.h
+        84.h
+        685.h
+        main.cpp)
 
 add_executable(Leetcode ${SOURCE_FILES})

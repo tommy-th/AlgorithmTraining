@@ -1,8 +1,7 @@
-#include "84.h"
+#include "906.h"
 
 int main() {
     Solution solution;
-    vector<int> input = {4, 2, 0, 3, 2, 5};
 
-    cout << solution.largestRectangleArea(input) << endl;
+    cout << solution.superpalindromesInRange("4", "1000") << endl;
 }

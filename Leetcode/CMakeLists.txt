@@ -4,6 +4,7 @@ project(Leetcode)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 set(SOURCE_FILES
+        notes.h
         leetcode.h
         546_bottomup.h
         546_topdown.h
@@ -44,6 +45,10 @@ set(SOURCE_FILES
         901.h
         902.h
         903.h
+        904.h
+        905.h
+        906.h
+        907.h
         main.cpp)
 
 add_executable(Leetcode ${SOURCE_FILES})

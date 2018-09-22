@@ -12,6 +12,7 @@ set(SOURCE_FILES
         664_sol.h
         818_dp.h
         818_queue.h
+        862.h
         876.h
         877.h
         878.h

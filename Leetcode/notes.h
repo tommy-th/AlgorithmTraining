@@ -60,5 +60,28 @@ bool isPalind(const string &pp) {
     }
     return true;
 }
+ */
+
+/*
+ * binary search
+
+    int bsearch(int s, int e, int t) {
+        if (s >= e) return s;
+        int mid = (s + e) / 2;
+
+        if (infos[mid].first <= t && t < infos[mid+1].first)
+            return mid;
+
+        if (infos[mid].first > t) {
+            return bsearch(s, mid-1, t);
+        } else {
+            return bsearch(mid+1, e, t);
+        }
+    }
+
+    * 특별히 binary search 도중 처리해야 할 일이 없다면 map을 쓰자
+     map<int, int> infos_;
+     (--infos_.upper_bound(t))->second;
+     위와 같이 구현하면 infos 의 key에서 t값보다 작거나 같은 최대 키를 찾는다.
 
  */

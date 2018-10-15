@@ -1,7 +1,8 @@
-#include "906.h"
+#include "914.h"
 
 int main() {
     Solution solution;
 
-    cout << solution.superpalindromesInRange("4", "1000") << endl;
+    vector<int> deck = {1,2,3,4,4,3,2,1};
+    cout << solution.hasGroupsSizeX(deck) << endl;
 }

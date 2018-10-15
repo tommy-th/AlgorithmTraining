@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.3)
 project(Leetcode)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 
 set(SOURCE_FILES
         notes.h
@@ -52,6 +52,10 @@ set(SOURCE_FILES
         908.h
         910.h
         911.h
+        913.h
+        914.h
+        915.h
+        916.h
         main.cpp)
 
 add_executable(Leetcode ${SOURCE_FILES})

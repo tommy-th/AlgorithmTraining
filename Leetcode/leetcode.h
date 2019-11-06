@@ -1,7 +1,3 @@
-//
-// Created by Naver on 2018. 9. 3..
-//
-
 #ifndef ALGORITHMTRAINING_LEETCODE_H
 #define ALGORITHMTRAINING_LEETCODE_H
 

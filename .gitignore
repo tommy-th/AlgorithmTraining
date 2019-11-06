@@ -3,4 +3,5 @@ tags
 *.o
 *.swp
 *.idea*
+build
 cmake-build-debug

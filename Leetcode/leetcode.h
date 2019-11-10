@@ -18,4 +18,19 @@
 using namespace std;
 
 
+vector<string> splitString(string str, char delimiter) {
+    vector<string> internal;
+    stringstream ss(str);
+    string temp;
+
+    while (getline(ss, temp, delimiter)) {
+        if (not temp.empty()) {
+            internal.push_back(temp);
+        }
+    }
+
+    return internal;
+}
+
+
 #endif //ALGORITHMTRAINING_LEETCODE_H

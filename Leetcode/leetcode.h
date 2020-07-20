@@ -33,4 +33,35 @@ vector<string> splitString(string str, char delimiter) {
 }
 
 
+class FenwickTree {
+ public:
+    FenwickTree(int max_size)
+        : n(max_size)
+        , counts(n + 1, 0) {
+    }
+
+    void update(int idx, int diff) {
+        do {
+            counts[idx] += diff;
+            idx += idx & -idx;
+        } while(idx <= n);
+    }
+
+    int sums(int idx) {
+        int ret = 0;
+
+        do {
+            ret += counts[idx];
+            idx -= idx & -idx;
+        } while(idx > 0);
+
+        return ret;
+    }
+
+ private:
+   int n;
+   vector<int> counts;
+};
+
+
 #endif //ALGORITHMTRAINING_LEETCODE_H

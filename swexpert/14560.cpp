@@ -144,7 +144,7 @@ BitsetResult applyGreedyOperators(Bitset&& a, Bitset&& b) {
   stringstream optsBuf;
 
   BitsetResult result = BitsetResult(std::move(a), std::move(b), "");
-  if (min(result.a.size(), result.b.size()) >= 10) {
+  if (min(result.a.size(), result.b.size()) >= 6) {
     return result;
   }
 
@@ -201,7 +201,7 @@ BitsetResult applyGreedyOperators(Bitset&& a, Bitset&& b) {
   return result;
 }
 
-string calcOperators(Bitset&& a, Bitset&& b, bool withGreedy) {
+BitsetResult calcOperators(Bitset&& a, Bitset&& b, bool withGreedy) {
   cout << toString(a) << " " << toString(b) << endl;
 
   BitsetResult result;
@@ -225,21 +225,40 @@ string calcOperators(Bitset&& a, Bitset&& b, bool withGreedy) {
     }
   }
 
-  if (result.diff > 0) {
-    result.popCommonBits();
-    string nopt = calcOperators(std::move(result.a), std::move(result.b), false);
-    return result.opts + nopt;
-  } else {
-    return result.opts;
-  }
+  return result;
 }
 
+string calcOperators(int A, int B) {
+  stringstream optCandidates;
+  while(min(A, B) * 2 < max(A, B)) {
+    if (A < B) {
+      A *= 2;
+      B += 1;
+      optCandidates.put('Y');
+    } else {
+      A += 1;
+      B *= 2;
+      optCandidates.put('X');
+    }
+  }
 
-string calcOperators(const int A, const int B) {
   Bitset a = buildBitset(A);
   Bitset b = buildBitset(B);
+  auto next = calcOperators(std::move(a), std::move(b), true);
+  next.opts = optCandidates.str() + next.opts;
 
-  return calcOperators(std::move(a), std::move(b), true);
+  BitsetResult result = std::move(next);
+
+  stringstream optResult;
+  optResult << result.opts;
+
+  while (result.diff > 0 and optResult.str().size() < 1000) {
+    result.popCommonBits();
+    result = calcOperators(std::move(result.a), std::move(result.b), false);
+    optResult << result.opts;
+  }
+
+  return optResult.str();
 }
 
 int main(int argc, char** argv) {
@@ -253,9 +272,9 @@ int main(int argc, char** argv) {
 
   for (int i = 1; i <= 100; ++i) {
     for (int j = i + 1; j <= 100; ++j) {
-      if (i == j or j==9 or j == 16 or j == 32 or j == 64) continue;
+      if (i == j or j==9 or j == 16 or j == 32 or j == 34 or j == 64) continue;
       string opts = calcOperators(i, j);
-      cout << i << " " << j << " : " <<  opts << endl;
+      cout << i << " " << j << " : " <<  opts.size() << endl;
     }
   }
 

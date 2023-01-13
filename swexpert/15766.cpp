@@ -5,111 +5,106 @@
 
 using namespace std;
 
+const int MAX_N = 200005;
 int N;
 
 int ESCAPE_EARNING = 1200000000;
 int ESCAPE_EARNING_THRESHOLD = 1000000000;
 
-struct Investment {
+struct Investment{
   int holding;
   int earning;
-
   Investment(int holding, int earning) : holding(holding), earning(earning) {}
 };
 
+int earnings[MAX_N];
+int costs[MAX_N];
+int maxCosts[MAX_N];
+int nodeOrderLen;
+int nodeOrder[MAX_N];
+vector<int> children[MAX_N];
+vector<Investment> totalChildInvestments;
+int investmentNodeStartIndex[MAX_N];
+vector<Investment> investmentNodes[MAX_N];
 
-struct InvestmentNode;
 
-vector<int> earnings;
-vector<int> costs;
-vector<int> leafFirstOrder;
-vector<vector<int>> children;
-vector<InvestmentNode> investmentNodes;
+void buildMaxCost(const int node) {
+  int childMaxCost = 0;
 
-struct InvestmentNode {
-  int node;
-  int maxCost;
-  vector<Investment> investments;
-
-  InvestmentNode() = default;
-
-  void buildMaxCost() {
-    int childMaxCost = 0;
-
-    for (int child : children[node]) {
-      childMaxCost += investmentNodes[child].maxCost;
-    }
-
-    int cost = costs[node];
-    int earning = earnings[node];
-
-    maxCost = max(max(0, cost - 1), cost - earning + childMaxCost);
+  for (int child : children[node]) {
+    childMaxCost += maxCosts[child];
   }
 
-  void buildInvestments() {
-    vector<Investment> tempInvestments;
-    vector<Investment> totalChildInvestments;
+  int cost = costs[node];
+  int earning = earnings[node];
 
-    for (int child : children[node]) {
-      const auto& childInvestments = investmentNodes[child].investments;
+  maxCosts[node] = max(max(0, cost - 1), cost - earning + childMaxCost);
+}
+
+void buildInvestments(const int node) {
+  totalChildInvestments.clear();
+
+  for (int child : children[node]) {
+    auto& childInvestments = investmentNodes[child];
+
+    if (investmentNodeStartIndex[child] < childInvestments.size()) {
       totalChildInvestments.insert(
-          totalChildInvestments.end(), childInvestments.begin(), childInvestments.end());
-    }
-
-    std::sort(totalChildInvestments.begin(), totalChildInvestments.end(),
-              [](const auto& lhs, const auto& rhs) {
-      return lhs.holding < rhs.holding or (lhs.holding == rhs.holding and lhs.earning > rhs.earning);
-    });
-
-    int holdings = 0;
-    int accumEarning = earnings[node];
-    for (const auto& investment : totalChildInvestments) {
-      if (holdings + accumEarning >= investment.holding) {
-        accumEarning += investment.earning;
-      } else {
-        tempInvestments.emplace_back(holdings, accumEarning);
-        holdings = investment.holding;
-        accumEarning = investment.earning;
-      }
-    }
-    tempInvestments.emplace_back(holdings, accumEarning);
-
-    int cost = costs[node];
-    int si = 0;
-
-    if (cost > 0) {
-      accumEarning = -cost;
-
-      for (; si < tempInvestments.size(); ++si) {
-        if (accumEarning < 0) {
-          accumEarning += tempInvestments[si].earning;
-        }
-        if (accumEarning >= 0) {
-          break;
-        }
-      }
-
-      if (accumEarning >= 0) {
-        investments.emplace_back(tempInvestments[si].holding + cost, accumEarning);
-      }
-    } else {
-      investments.emplace_back(tempInvestments[si].holding + cost, tempInvestments[si].earning);
-    }
-
-    for (int i=si+1; i<tempInvestments.size(); ++i) {
-      investments.emplace_back(tempInvestments[i].holding + cost, tempInvestments[i].earning);
+          totalChildInvestments.end(),
+          childInvestments.begin() + investmentNodeStartIndex[child],
+          childInvestments.end());
     }
   }
-};
+
+  std::sort(totalChildInvestments.begin(), totalChildInvestments.end(),
+            [](const auto& lhs, const auto& rhs) {
+    return lhs.holding < rhs.holding or (lhs.holding == rhs.holding and lhs.earning > rhs.earning);
+  });
+
+  int holdings = 0;
+  int earningSum = earnings[node];
+  int accumEarning = earningSum;
+  auto& investments = investmentNodes[node];
+
+  for (const auto& investment : totalChildInvestments) {
+    if (holdings + accumEarning >= investment.holding) {
+      earningSum += investment.earning;
+    } else {
+      investments.emplace_back(holdings, earningSum);
+      holdings = investment.holding;
+      earningSum = investment.earning;
+    }
+    accumEarning += investment.earning;
+  }
+  investments.emplace_back(holdings, earningSum);
+
+  int cost = costs[node];
+  int si = 0;
+
+  if (cost > 0) {
+    accumEarning = -cost;
+
+    for (; si < investments.size(); ++si) {
+      if (accumEarning < 0) {
+        accumEarning += investments[si].earning;
+      }
+      if (accumEarning >= 0) {
+        break;
+      }
+    }
+
+    if (accumEarning >= 0) {
+      investments[si].holding += cost;
+      investments[si].earning = accumEarning;
+    }
+  }
+
+  investmentNodeStartIndex[node] = si;
+}
 
 void initAndGetInputs() {
-  earnings = vector<int>(N, 0);
-  costs = vector<int>(N, 0);
-  leafFirstOrder = vector<int>();
-  children = vector<vector<int>>(N, vector<int>());
-  investmentNodes = vector<InvestmentNode>(N);
   for (int i=0; i<N; ++i) {
-    investmentNodes[i].node = i;
+    children[i].clear();
+    investmentNodes[i].clear();
   }
 
   int parent, earning, cost;
@@ -125,33 +120,33 @@ void buildLeafFirstOrderTree() {
   queue<int> q;
   q.push(0);
 
+  nodeOrderLen = 0;
   while(not q.empty()) {
     int node = q.front(); q.pop();
-    leafFirstOrder.push_back(node);
+    nodeOrder[nodeOrderLen++] = node;
 
     for (const auto &child : children[node]) {
       q.push(child);
     }
   }
-
-  std::reverse(leafFirstOrder.begin(), leafFirstOrder.end());
 }
 
 int findMaxSearchHoldings() {
-  for (const auto& node : leafFirstOrder) {
-    investmentNodes[node].buildMaxCost();
+  for (int i=nodeOrderLen - 1; i>=0; --i) {
+    buildMaxCost(nodeOrder[i]);
   }
-  return investmentNodes[0].maxCost + 1;
+  return maxCosts[0] + 1;
 }
 
 int findMinSearchHoldings() {
-  for (const auto& node : leafFirstOrder) {
-    investmentNodes[node].buildInvestments();
+  for (int i=nodeOrderLen - 1; i>=0; --i) {
+    buildInvestments(nodeOrder[i]);
   }
 
   int accumEarnings = 0;
 
-  for (const auto &investment : investmentNodes[0].investments) {
+  for (int i = investmentNodeStartIndex[0]; i<investmentNodes[0].size(); ++i) {
+    const auto& investment = investmentNodes[0][i];
     if (investment.earning > ESCAPE_EARNING_THRESHOLD) {
       return investment.holding - accumEarnings;
     } else {
@@ -160,14 +155,41 @@ int findMinSearchHoldings() {
   }
 }
 
-void printInvestmentNodes() {
-  for (auto& investmentNode : investmentNodes) {
-    cout << investmentNode.node << endl;
-    for (auto& investment : investmentNode.investments) {
-      cout << investment.holding << " " << investment.earning << endl;
-    }
-    cout << endl;
+void printInvestmentNodes(const int node) {
+  auto& investmentNode = investmentNodes[node];
+  cout << endl << node << endl;
+
+  for (int i = investmentNodeStartIndex[node]; i<investmentNode.size(); ++i) {
+    const auto& investment = investmentNode[i];
+    cout << investment.holding << " " << investment.earning << endl;
   }
+  cout << endl;
+}
+
+void initWithDummyInputs() {
+  for (int i=0; i<N; ++i) {
+    children[i].clear();
+    investmentNodes[i].clear();
+  }
+
+  for (int node=1; node<N - 500; ++node) {
+    costs[node] = 1;
+    earnings[node] = 1;
+    children[node-1].push_back(node);
+  }
+
+  int cost = 1;
+  int earning = 2;
+
+  for (int node=N-500; node<N; ++node) {
+    costs[node] = cost;
+    earnings[node] = earning;
+    children[N-501].push_back(node);
+    cost += 2;
+    earning += 2;
+  }
+
+  earnings[N-1] = ESCAPE_EARNING;
 }
 
 int main(int argc, char** argv) {
@@ -178,6 +200,8 @@ int main(int argc, char** argv) {
   for (test_case = 1; test_case <= T; ++test_case) {
     cin >> N;
     initAndGetInputs();
+//    N = 200000;
+//    initWithDummyInputs();
     buildLeafFirstOrderTree();
 
     cout << "#" << test_case << " " << findMaxSearchHoldings() << " " << findMinSearchHoldings() << endl;

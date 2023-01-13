@@ -14,8 +14,13 @@ int ESCAPE_EARNING_THRESHOLD = 1000000000;
 struct Investment{
   int holding;
   int earning;
+  Investment() : holding(0), earning(0) {}
   Investment(int holding, int earning) : holding(holding), earning(earning) {}
-};
+}__attribute__((packed, aligned(1)));
+
+bool investmentCompare(const Investment &lhs, const Investment &rhs) {
+  return lhs.holding < rhs.holding or (lhs.holding == rhs.holding and lhs.earning > rhs.earning);
+}
 
 int earnings[MAX_N];
 int costs[MAX_N];
@@ -23,8 +28,10 @@ int maxCosts[MAX_N];
 int nodeOrderLen;
 int nodeOrder[MAX_N];
 vector<int> children[MAX_N];
-vector<Investment> totalChildInvestments;
-int investmentNodeStartIndex[MAX_N];
+
+int totalChildInvestmentLen;
+Investment totalChildInvestments[MAX_N];
+int investmentNodeStart[MAX_N];
 vector<Investment> investmentNodes[MAX_N];
 
 
@@ -42,30 +49,25 @@ void buildMaxCost(const int node) {
 }
 
 void buildInvestments(const int node) {
-  totalChildInvestments.clear();
+  totalChildInvestmentLen = 0;
 
   for (int child : children[node]) {
-    auto& childInvestments = investmentNodes[child];
-
-    if (investmentNodeStartIndex[child] < childInvestments.size()) {
-      totalChildInvestments.insert(
-          totalChildInvestments.end(),
-          childInvestments.begin() + investmentNodeStartIndex[child],
-          childInvestments.end());
+    for (int i=investmentNodeStart[child]; i<investmentNodes[child].size(); ++i) {
+      totalChildInvestments[totalChildInvestmentLen++] = investmentNodes[child][i];
     }
+    investmentNodes[child] = vector<Investment>();
   }
 
-  std::sort(totalChildInvestments.begin(), totalChildInvestments.end(),
-            [](const auto& lhs, const auto& rhs) {
-    return lhs.holding < rhs.holding or (lhs.holding == rhs.holding and lhs.earning > rhs.earning);
-  });
+  sort(totalChildInvestments, totalChildInvestments + totalChildInvestmentLen, investmentCompare);
 
   int holdings = 0;
   int earningSum = earnings[node];
   int accumEarning = earningSum;
   auto& investments = investmentNodes[node];
+  investments.clear();
 
-  for (const auto& investment : totalChildInvestments) {
+  for (int i=0; i<totalChildInvestmentLen; ++i) {
+    auto& investment = totalChildInvestments[i];
     if (holdings + accumEarning >= investment.holding) {
       earningSum += investment.earning;
     } else {
@@ -98,13 +100,12 @@ void buildInvestments(const int node) {
     }
   }
 
-  investmentNodeStartIndex[node] = si;
+  investmentNodeStart[node] = si;
 }
 
 void initAndGetInputs() {
   for (int i=0; i<N; ++i) {
     children[i].clear();
-    investmentNodes[i].clear();
   }
 
   int parent, earning, cost;
@@ -145,7 +146,7 @@ int findMinSearchHoldings() {
 
   int accumEarnings = 0;
 
-  for (int i = investmentNodeStartIndex[0]; i<investmentNodes[0].size(); ++i) {
+  for (int i = investmentNodeStart[0]; i<investmentNodes[0].size(); ++i) {
     const auto& investment = investmentNodes[0][i];
     if (investment.earning > ESCAPE_EARNING_THRESHOLD) {
       return investment.holding - accumEarnings;
@@ -159,7 +160,7 @@ void printInvestmentNodes(const int node) {
   auto& investmentNode = investmentNodes[node];
   cout << endl << node << endl;
 
-  for (int i = investmentNodeStartIndex[node]; i<investmentNode.size(); ++i) {
+  for (int i = investmentNodeStart[node]; i<investmentNodes[node].size(); ++i) {
     const auto& investment = investmentNode[i];
     cout << investment.holding << " " << investment.earning << endl;
   }
@@ -169,7 +170,6 @@ void printInvestmentNodes(const int node) {
 void initWithDummyInputs() {
   for (int i=0; i<N; ++i) {
     children[i].clear();
-    investmentNodes[i].clear();
   }
 
   for (int node=1; node<N - 500; ++node) {
@@ -200,8 +200,6 @@ int main(int argc, char** argv) {
   for (test_case = 1; test_case <= T; ++test_case) {
     cin >> N;
     initAndGetInputs();
-//    N = 200000;
-//    initWithDummyInputs();
     buildLeafFirstOrderTree();
 
     cout << "#" << test_case << " " << findMaxSearchHoldings() << " " << findMinSearchHoldings() << endl;

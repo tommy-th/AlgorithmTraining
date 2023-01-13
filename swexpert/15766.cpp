@@ -94,7 +94,7 @@ void initAndGetInputs() {
 
   int parent, earning, cost;
   for (int node=1; node<N; ++node) {
-    cin >> parent >> earning >> cost;
+    scanf("%d%d%d", &parent, &earning, &cost);
     earnings[node] = earning == -1 ? ESCAPE_EARNING : earning;
     costs[node] = cost;
     children[parent].push_back(node);
@@ -184,8 +184,6 @@ int main(int argc, char** argv) {
   for (test_case = 1; test_case <= T; ++test_case) {
     cin >> N;
     initAndGetInputs();
-//    N = 200000;
-//    initWithDummyInputs();
     buildLeafFirstOrderTree();
 
     cout << "#" << test_case << " " << findMaxSearchHoldings() << " " << findMinSearchHoldings() << endl;

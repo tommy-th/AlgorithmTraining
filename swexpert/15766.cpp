@@ -33,7 +33,6 @@ int totalInvestmentIndex;
 int totalInvestmentStart[MAX_N];
 int totalInvestmentLen[MAX_N];
 Investment totalInvestments[MAX_N];
-Investment tempInvestments[MAX_N];
 
 
 void buildMaxCost(const int node) {
@@ -57,7 +56,7 @@ void buildInvestments(const int node) {
     childInvestmentLen += totalInvestmentLen[child];
   }
 
-  if (childInvestmentLen > 0) {
+  if (childInvestmentLen > 0 and children[node].size() > 1) {
     sort(totalInvestments + childInvestmentStart,
          totalInvestments + childInvestmentStart + childInvestmentLen,
          investmentCompare);
@@ -67,48 +66,49 @@ void buildInvestments(const int node) {
   int earningSum = earnings[node];
   int accumEarning = earningSum;
 
-  int tempInvestmentLen = 0;
+  totalInvestmentIndex = childInvestmentStart;
   for (int i=childInvestmentStart; i<childInvestmentStart + childInvestmentLen; ++i) {
     auto& investment = totalInvestments[i];
     if (holdings + accumEarning >= investment.holding) {
       earningSum += investment.earning;
     } else {
-      tempInvestments[tempInvestmentLen++] = Investment(holdings, earningSum);
+      auto newInvestment = Investment(holdings, earningSum);
       holdings = investment.holding;
       earningSum = investment.earning;
+      totalInvestments[totalInvestmentIndex++] = newInvestment;
     }
     accumEarning += investment.earning;
   }
-  tempInvestments[tempInvestmentLen++] = Investment(holdings, earningSum);
+  totalInvestments[totalInvestmentIndex++] = Investment(holdings, earningSum);
 
   int cost = costs[node];
-  int tempInvestmentStart = 0;
-
+  int investmentOffset = 0;
   if (cost > 0) {
     accumEarning = -cost;
 
-    for (; tempInvestmentStart < tempInvestmentLen; ++tempInvestmentStart) {
+    for (int i=childInvestmentStart; i<totalInvestmentIndex; ++i) {
+      auto& investment = totalInvestments[i];
       if (accumEarning < 0) {
-        accumEarning += tempInvestments[tempInvestmentStart].earning;
+        accumEarning += investment.earning;
+        investmentOffset = i - childInvestmentStart;
       }
       if (accumEarning >= 0) {
         break;
       }
     }
 
+    for (int i=childInvestmentStart; i<childInvestmentStart + investmentOffset; ++i) {
+      totalInvestments[i] = Investment(0, 0);
+    }
+
     if (accumEarning >= 0) {
-      tempInvestments[tempInvestmentStart].holding += cost;
-      tempInvestments[tempInvestmentStart].earning = accumEarning;
+      totalInvestments[childInvestmentStart + investmentOffset].holding += cost;
+      totalInvestments[childInvestmentStart + investmentOffset].earning = accumEarning;
     }
   }
 
-  totalInvestmentIndex = childInvestmentStart;
   totalInvestmentStart[node] = childInvestmentStart;
-  totalInvestmentLen[node] = tempInvestmentLen - tempInvestmentStart;
-
-  for (int i = tempInvestmentStart; i<tempInvestmentLen; ++i) {
-    totalInvestments[totalInvestmentIndex++] = tempInvestments[i];
-  }
+  totalInvestmentLen[node] = totalInvestmentIndex - childInvestmentStart;
 }
 
 void initAndGetInputs() {
@@ -132,21 +132,14 @@ void initWithDummyInputs() {
     children[i].clear();
   }
 
-  for (int node=1; node<N - 500; ++node) {
-    costs[node] = 1;
-    earnings[node] = 1;
-    children[node-1].push_back(node);
-  }
-
-  int cost = 1;
-  int earning = 2;
-
-  for (int node=N-500; node<N; ++node) {
-    costs[node] = cost;
-    earnings[node] = earning;
-    children[N-501].push_back(node);
-    cost += 2;
-    earning += 2;
+  int parent = -1;
+  for (int node=1; node<N; ++node) {
+    costs[node] = rand() % 1000;
+    earnings[node] = rand() % 1000;
+    if (node % 2 == 1) {
+      parent += 1;
+    }
+    children[parent].push_back(node);
   }
 
   earnings[N-1] = ESCAPE_EARNING;
@@ -189,16 +182,22 @@ int findMinSearchHoldings() {
     buildInvestments(nodeOrder[i]);
   }
 
+  int holding = 0;
   int accumEarnings = 0;
-
   for (int i = totalInvestmentStart[0]; i<totalInvestmentStart[0] + totalInvestmentLen[0]; ++i) {
     const auto& investment = totalInvestments[i];
     if (investment.earning > ESCAPE_EARNING_THRESHOLD) {
-      return investment.holding - accumEarnings;
+      if (holding + accumEarnings >= investment.holding) {
+        return holding;
+      } else {
+        return investment.holding - accumEarnings;
+      }
     } else {
+      holding = investment.holding;
       accumEarnings += investment.earning;
     }
   }
+  return -1;
 }
 
 int main(int argc, char** argv) {
@@ -209,6 +208,8 @@ int main(int argc, char** argv) {
   for (test_case = 1; test_case <= T; ++test_case) {
     cin >> N;
     initAndGetInputs();
+//    N = 200000;
+//    initWithDummyInputs();
     buildLeafFirstOrderTree();
 
     cout << "#" << test_case << " " << findMaxSearchHoldings() << " " << findMinSearchHoldings() << endl;
